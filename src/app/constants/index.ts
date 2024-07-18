@@ -20,6 +20,7 @@ export const PatientFormDefaultValues = {
   address: "",
   emergencyContactName: "",
   emergencyContactNumber: "",
+  chiefComplaints:""
 };
 
 

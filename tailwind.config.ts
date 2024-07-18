@@ -23,8 +23,10 @@ const config = {
       colors: {
         green: {
           500: "#24AE7C",
+          550:"#28a448",
           600: "#0D2A1F",
           700:"#18676d",
+
         },
         gray:{
           500:"#eeeee4"

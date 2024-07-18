@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,20 +6,36 @@ import { z } from "zod";
 import { Form } from "../form";
 import { SelectItem } from "../select";
 import { GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "../../constants/index";
-//import { registerPatient } from "@/lib/actions/patient.actions";
 import { PatientFormValidation } from "../../lib/validation";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 
-const PatientRegistrationForm = () => {
+const fetchPatientData = async (identificationType:any, identificationNumber:any) => {
+  // Replace this with your actual API call
+  return {
+    firstName: "John",
+    lastName: "Doe",
+    email: "johndoe@gmail.com",
+    phoneNumber: "+1(306) 123-4567",
+    dateOfBirth: new Date("1990-01-01"),
+    biologicalSex: "Male",
+    preferredPronouns: "He/Him",
+    address: "14 street, New York, NY - 5101",
+    emergencyContactName: "Jane Doe",
+    emergencyContactNumber: "913067179259",
+    chiefComplaints: "Headache and fever", // Example data
+  };
+};
+
+const ExisitingPatientRegistrationForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
-    resolver: zodResolver(PatientFormValidation)
+    resolver: zodResolver(PatientFormValidation),
   });
 
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
@@ -41,12 +55,36 @@ const PatientRegistrationForm = () => {
     setIsLoading(false);
   };
 
+  const onSearch = async () => {
+    const identificationType = form.getValues("identificationType");
+    const identificationNumber = form.getValues("identificationNumber");
+
+    if (!identificationType || !identificationNumber) {
+      alert("Please provide both identification type and number.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const patientData = await fetchPatientData(identificationType, identificationNumber);
+
+      if (patientData) {
+        form.reset(patientData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsLoading(false);
+  };
+
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-12">
           <section className="space-y-4">
-            <h1 className="header ">New Patient Registration</h1>
+            <h1 className="header">Existing Patient Registration</h1>
           </section>
 
           <section className="space-y-6">
@@ -69,7 +107,7 @@ const PatientRegistrationForm = () => {
               ))}
             </CustomFormField>
 
-            {/* Health Card Number */}
+            {/* Identification Number */}
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               control={form.control}
@@ -77,6 +115,13 @@ const PatientRegistrationForm = () => {
               label="Identification Number"
               placeholder="123456789"
             />
+            <button
+              type="button"
+              onClick={onSearch}
+              className="w-full px-4 py-2 bg-green-550 text-white rounded-md hover:bg-blue-600"
+            >
+              Search
+            </button>
           </section>
 
           <section className="space-y-6">
@@ -156,7 +201,7 @@ const PatientRegistrationForm = () => {
               control={form.control}
               name="preferredPronouns"
               label="Preferred Pronouns"
-              placeholder="He/Him, She/Her, They/Them"
+              placeholder="e.g., He/Him, She/Her, They/Them"
             />
 
             {/* Address */}
@@ -164,27 +209,33 @@ const PatientRegistrationForm = () => {
               fieldType={FormFieldType.INPUT}
               control={form.control}
               name="address"
-              label="Address"
-              placeholder="14 street, New york, NY - 5101"
+              label="Home address"
+              placeholder="14 street, New York, NY - 5101"
+              iconAlt="address"
             />
 
-            {/* Emergency Contact Name & Number */}
-            <CustomFormField
-              fieldType={FormFieldType.INPUT}
-              control={form.control}
-              name="emergencyContactName"
-              label="Emergency Contact Name"
-              placeholder="Guardian's name"
-            />
+            {/* Emergency Contact */}
+            <div className="flex flex-col gap-6 xl:flex-row">
+              <CustomFormField
+                fieldType={FormFieldType.INPUT}
+                control={form.control}
+                name="emergencyContactName"
+                label="Emergency Contact Name"
+                placeholder="Jane Doe"
+                iconAlt="user"
+              />
 
+              <CustomFormField
+                fieldType={FormFieldType.PHONE_INPUT}
+                control={form.control}
+                name="emergencyContactNumber"
+                label="Emergency Contact Number"
+                placeholder="(555) 987-6543"
+              />
+            </div>
+
+            {/* Chief Complaints */}
             <CustomFormField
-              fieldType={FormFieldType.PHONE_INPUT}
-              control={form.control}
-              name="emergencyContactNumber"
-              label="Emergency Contact Number"
-              placeholder="(555) 123-4567"
-            />
-             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="chiefComplaints"
@@ -193,16 +244,19 @@ const PatientRegistrationForm = () => {
             />
           </section>
 
-          <SubmitButton isLoading={isLoading}>Submit and Continue</SubmitButton>
+          <section className="flex justify-between gap-6">
+            <SubmitButton isLoading={isLoading}>Register</SubmitButton>
+          </section>
         </form>
       </Form>
+
       {successMessage && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-green-600 text-white text-center">
-          {successMessage}
+        <div className="mt-4 text-green-600">
+          <p>{successMessage}</p>
         </div>
       )}
     </div>
   );
 };
 
-export default PatientRegistrationForm;
+export default ExisitingPatientRegistrationForm;

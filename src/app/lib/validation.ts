@@ -27,5 +27,7 @@ export const PatientFormValidation = z.object({
     .string()
     .min(5, "Address must be at least 5 characters")
     .max(500, "Address must be at most 500 characters"),
-  emergencyContact: z.string().optional(),
+  emergencyContactName: z.string().optional(),
+  emergencyContactNumber: z.string().optional(),
+  chiefComplaints: z.string().min(2, "complaint must be more than 2 characters"),
 });

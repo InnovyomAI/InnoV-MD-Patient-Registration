@@ -156,9 +156,9 @@ const PatientRegistrationForm = () => {
               control={form.control}
               name="preferredPronouns"
               label="Preferred Pronouns"
-              placeholder="He/Him, She/Her, They/Them"
+              placeholder="Select preferred pronouns"
             >
-               {GenderOptions.map((option, i) => (
+               {PreferredPronouns.map((option, i) => (
                   <SelectItem key={option + i} value={option}>
                     {option}
                   </SelectItem>

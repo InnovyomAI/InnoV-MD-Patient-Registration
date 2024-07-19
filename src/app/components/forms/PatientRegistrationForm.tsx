@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "../form";
 import { SelectItem } from "../select";
-import { GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "../../constants/index";
+import { GenderOptions, IdentificationTypes, PreferredPronouns, PatientFormDefaultValues } from "../../constants/index";
 //import { registerPatient } from "@/lib/actions/patient.actions";
 import { PatientFormValidation } from "../../lib/validation";
 import "react-datepicker/dist/react-datepicker.css";
@@ -157,7 +157,13 @@ const PatientRegistrationForm = () => {
               name="preferredPronouns"
               label="Preferred Pronouns"
               placeholder="He/Him, She/Her, They/Them"
-            />
+            >
+               {GenderOptions.map((option, i) => (
+                  <SelectItem key={option + i} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </CustomFormField>
 
             {/* Address */}
             <CustomFormField

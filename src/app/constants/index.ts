@@ -1,15 +1,23 @@
 export const GenderOptions = ["Male", "Female", "Other"];
 
 export const IdentificationTypes = [
-  "healthCardNumber",
-  "provincialID",
-  "passport",
-  "drivingLicense",
+  "Healthcard Number",
+  "Provincial ID",
+  "Passport",
+  "Driving License",
+];
+
+export const PreferredPronouns = [
+  "He/Him",
+  "She/Her",
+  "They/Them",
+  "Ze/Hir",
+  "Xe/Xem",
 ];
 
 export const PatientFormDefaultValues = {
   identificationNumber: "",
-  identificationType: "healthCardNumber",
+  identificationType: "Healthcard Number",
   firstName: "",
   lastName: "",
   dateOfBirth: new Date(Date.now()),

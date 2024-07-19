@@ -152,7 +152,7 @@ const PatientRegistrationForm = () => {
 
             {/* Preferred Pronouns */}
             <CustomFormField
-              fieldType={FormFieldType.INPUT}
+              fieldType={FormFieldType.SELECT}
               control={form.control}
               name="preferredPronouns"
               label="Preferred Pronouns"

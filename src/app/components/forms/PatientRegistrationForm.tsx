@@ -15,6 +15,20 @@ import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 
+const registerPatient = async (patientData: any) => {
+  const response = await fetch("/api/newPatient", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(patientData),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to register patient");
+  }
+  return await response.json();
+};
+
 const PatientRegistrationForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -28,11 +42,10 @@ const PatientRegistrationForm = () => {
     setIsLoading(true);
 
     try {
-      // const newPatient = await registerPatient(values);
-      const newPatient = { id: '12345', message: 'Registration successful!' }; // Example response
+      const newPatient = await registerPatient(values); // API call for registering patient
 
       if (newPatient) {
-        setSuccessMessage(`Registration successful! Your ID is ${newPatient.id}`);
+        setSuccessMessage(`Registration successful! Your ID is ${newPatient.registrationId}`);
       }
     } catch (error) {
       console.log(error);
@@ -199,7 +212,7 @@ const PatientRegistrationForm = () => {
             />
           </section>
 
-          <SubmitButton isLoading={isLoading}>Submit and Continue</SubmitButton>
+          <SubmitButton isLoading={isLoading}>Submit</SubmitButton>
         </form>
       </Form>
       {successMessage && (

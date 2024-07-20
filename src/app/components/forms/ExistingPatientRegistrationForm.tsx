@@ -12,21 +12,32 @@ import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 
-const fetchPatientData = async (identificationType:any, identificationNumber:any) => {
-  // Replace this with your actual API call
-  return {
-    firstName: "John",
-    lastName: "Doe",
-    email: "johndoe@gmail.com",
-    phoneNumber: "+1(306) 123-4567",
-    dateOfBirth: new Date("1990-01-01"),
-    biologicalSex: "Male",
-    preferredPronouns: "He/Him",
-    address: "14 street, New York, NY - 5101",
-    emergencyContactName: "Jane Doe",
-    emergencyContactNumber: "913067179259",
-    chiefComplaints: "Headache and fever", // Example data
-  };
+const fetchPatientData = async (identificationType: any, identificationNumber: any) => {
+  const response = await fetch(`/api/fetchExisting`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ identificationType, identificationNumber }),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch patient data");
+  }
+  return await response.json();
+};
+
+const registerPatient = async (patientData: any) => {
+  const response = await fetch("/api/insertExisting", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(patientData),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to register patient");
+  }
+  return await response.json();
 };
 
 const ExisitingPatientRegistrationForm = () => {
@@ -42,11 +53,11 @@ const ExisitingPatientRegistrationForm = () => {
     setIsLoading(true);
 
     try {
-      // const newPatient = await registerPatient(values);
-      const newPatient = { id: '12345', message: 'Registration successful!' }; // Example response
+      // Call the API to register the patient
+      const newPatient = await registerPatient(values); // <-- API call for registering patient
 
       if (newPatient) {
-        setSuccessMessage(`Registration successful! Your ID is ${newPatient.id}`);
+        setSuccessMessage(`Registration successful! Your ID is ${newPatient.registrationId}`);
       }
     } catch (error) {
       console.log(error);
@@ -54,7 +65,7 @@ const ExisitingPatientRegistrationForm = () => {
 
     setIsLoading(false);
   };
-
+  
   const onSearch = async () => {
     const identificationType = form.getValues("identificationType");
     const identificationNumber = form.getValues("identificationNumber");
@@ -67,10 +78,11 @@ const ExisitingPatientRegistrationForm = () => {
     setIsLoading(true);
 
     try {
-      const patientData = await fetchPatientData(identificationType, identificationNumber);
+      // Fetch the patient data based on identification type and number
+      const patientData = await fetchPatientData(identificationType, identificationNumber); // <-- API call for fetching patient data
 
       if (patientData) {
-        form.reset(patientData);
+        form.reset(patientData.data); // Populate form with fetched data
       }
     } catch (error) {
       console.log(error);

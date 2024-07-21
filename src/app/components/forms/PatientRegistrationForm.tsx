@@ -2,19 +2,18 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Form } from "../components/Form";
-import { SelectItem } from "../components/SelectItem";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
-import { GenderOptions, IdentificationTypes, PreferredPronouns } from "../constants/index";
-import { PatientFormValidation } from "../lib/validation";
+import { Form } from "../form";
+import { SelectItem } from "../select";
+import { GenderOptions, IdentificationTypes, PreferredPronouns, PatientFormDefaultValues } from "../../constants/index";
+//import { registerPatient } from "@/lib/actions/patient.actions";
+import { PatientFormValidation } from "../../lib/validation";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
-import CustomFormField, { FormFieldType } from "../components/CustomFormField";
-import SubmitButton from "../components/SubmitButton";
+import CustomFormField, { FormFieldType } from "../CustomFormField";
+import SubmitButton from "../SubmitButton";
 import useSpeechToText from '../hooks/useSpeechToText';
 
 const registerPatient = async (patientData: any) => {

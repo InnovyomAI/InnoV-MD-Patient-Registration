@@ -4,17 +4,18 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from 'zod';
-import { Form } from "../components/Form";
-import { SelectItem } from "../components/SelectItem";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
-import { GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "../constants/index";
-import { PatientFormValidation } from "../lib/validation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form } from "../form";
+import { SelectItem } from "../select";
+import { GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "../../constants/index";
+import { PatientFormValidation } from "../../lib/validation";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
-import CustomFormField, { FormFieldType } from "../components/CustomFormField";
-import SubmitButton from "../components/SubmitButton";
+import CustomFormField, { FormFieldType } from "../CustomFormField";
+import SubmitButton from "../SubmitButton";
 import useSpeechToText from '../hooks/useSpeechToText';
 
 const fetchPatientData = async (identificationType: any, identificationNumber: any) => {

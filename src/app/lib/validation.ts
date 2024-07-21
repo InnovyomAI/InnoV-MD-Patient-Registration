@@ -7,7 +7,7 @@ export const LoginFormValidation = z.object({
 
 export const PatientFormValidation = z.object({
   identificationNumber: z.string().min(1, "identification number must not be empty"),
-  identificationType: z.enum(["healthCardNumber", "provincialID", "passport", "drivingLicense"]),
+  identificationType: z.enum(["Healthcard Number", "Provincial ID", "Passport", "Driving License"]),
   firstName: z
     .string()
     .min(2, "First name must be at least 2 characters")

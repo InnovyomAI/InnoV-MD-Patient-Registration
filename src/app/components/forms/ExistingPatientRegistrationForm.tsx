@@ -1,21 +1,16 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from 'zod';
-import { Form } from "../components/Form";
-import { SelectItem } from "../components/SelectItem";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
-import { GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "../constants/index";
-import { PatientFormValidation } from "../lib/validation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form } from "../form";
+import { SelectItem } from "../select";
+import { GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "../../constants/index";
+import { PatientFormValidation } from "../../lib/validation";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
-import CustomFormField, { FormFieldType } from "../components/CustomFormField";
-import SubmitButton from "../components/SubmitButton";
-import useSpeechToText from '../hooks/useSpeechToText';
+import CustomFormField, { FormFieldType } from "../CustomFormField";
+import SubmitButton from "../SubmitButton";
 
 const fetchPatientData = async (identificationType: any, identificationNumber: any) => {
   const response = await fetch(`/api/fetchExisting`, {
@@ -49,24 +44,17 @@ const ExisitingPatientRegistrationForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const { text: speechToText, isListening, startListening, stopListening } = useSpeechToText();
-  const [inputText, setInputText] = useState('');
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
   });
 
-  useEffect(() => {
-    if (isListening) {
-      setInputText(prevText => prevText + ' ' + speechToText);
-    }
-  }, [speechToText]);
-
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
 
     try {
-      const newPatient = await registerPatient(values);
+      // Call the API to register the patient
+      const newPatient = await registerPatient(values); // <-- API call for registering patient
 
       if (newPatient) {
         setSuccessMessage(`Registration successful! Your ID is ${newPatient.registrationId}`);
@@ -77,7 +65,7 @@ const ExisitingPatientRegistrationForm = () => {
 
     setIsLoading(false);
   };
-
+  
   const onSearch = async () => {
     const identificationType = form.getValues("identificationType");
     const identificationNumber = form.getValues("identificationNumber");
@@ -90,24 +78,17 @@ const ExisitingPatientRegistrationForm = () => {
     setIsLoading(true);
 
     try {
-      const patientData = await fetchPatientData(identificationType, identificationNumber);
+      // Fetch the patient data based on identification type and number
+      const patientData = await fetchPatientData(identificationType, identificationNumber); // <-- API call for fetching patient data
 
       if (patientData) {
-        form.reset(patientData.data);
+        form.reset(patientData.data); // Populate form with fetched data
       }
     } catch (error) {
       console.log(error);
     }
 
     setIsLoading(false);
-  };
-
-  const handleToggleListening = () => {
-    if (isListening) {
-      stopListening();
-    } else {
-      startListening();
-    }
   };
 
   return (
@@ -123,6 +104,7 @@ const ExisitingPatientRegistrationForm = () => {
               <h2 className="sub-header">Identification and Verification</h2>
             </div>
 
+            {/* Identification Type */}
             <CustomFormField
               fieldType={FormFieldType.SELECT}
               control={form.control}
@@ -137,6 +119,7 @@ const ExisitingPatientRegistrationForm = () => {
               ))}
             </CustomFormField>
 
+            {/* Identification Number */}
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               control={form.control}
@@ -158,6 +141,7 @@ const ExisitingPatientRegistrationForm = () => {
               <h2 className="sub-header">Personal Information</h2>
             </div>
 
+            {/* First Name & Last Name */}
             <div className="flex flex-col gap-6 xl:flex-row">
               <CustomFormField
                 fieldType={FormFieldType.INPUT}
@@ -178,6 +162,7 @@ const ExisitingPatientRegistrationForm = () => {
               />
             </div>
 
+            {/* Email & Phone */}
             <div className="flex flex-col gap-6 xl:flex-row">
               <CustomFormField
                 fieldType={FormFieldType.INPUT}
@@ -197,6 +182,7 @@ const ExisitingPatientRegistrationForm = () => {
               />
             </div>
 
+            {/* BirthDate & Gender */}
             <div className="flex flex-col gap-6 xl:flex-row">
               <CustomFormField
                 fieldType={FormFieldType.DATE_PICKER}
@@ -221,6 +207,7 @@ const ExisitingPatientRegistrationForm = () => {
               </CustomFormField>
             </div>
 
+            {/* Preferred Pronouns */}
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               control={form.control}
@@ -229,6 +216,7 @@ const ExisitingPatientRegistrationForm = () => {
               placeholder="e.g., He/Him, She/Her, They/Them"
             />
 
+            {/* Address */}
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               control={form.control}
@@ -238,6 +226,7 @@ const ExisitingPatientRegistrationForm = () => {
               iconAlt="address"
             />
 
+            {/* Emergency Contact */}
             <div className="flex flex-col gap-6 xl:flex-row">
               <CustomFormField
                 fieldType={FormFieldType.INPUT}
@@ -257,28 +246,14 @@ const ExisitingPatientRegistrationForm = () => {
               />
             </div>
 
-            <div className="relative w-full">
-              <CustomFormField
-                fieldType={FormFieldType.TEXTAREA}
-                control={form.control}
-                name="chiefComplaints"
-                label="Chief Complaints"
-                placeholder="Describe any chief complaints"
-                value={inputText} // Bind the input text to the state
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputText(e.target.value)} // Handle manual changes
-                disabled={isListening} // Disable input when listening
-              />
-              <span
-                className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                onClick={handleToggleListening}
-              >
-                {isListening ? (
-                  <FontAwesomeIcon icon={faMicrophoneSlash} className="text-red-600" />
-                ) : (
-                  <FontAwesomeIcon icon={faMicrophone} className="text-blue-600" />
-                )}
-              </span>
-            </div>
+            {/* Chief Complaints */}
+            <CustomFormField
+              fieldType={FormFieldType.TEXTAREA}
+              control={form.control}
+              name="chiefComplaints"
+              label="Chief Complaints"
+              placeholder="Describe any chief complaints"
+            />
           </section>
 
           <section className="flex justify-between gap-6">

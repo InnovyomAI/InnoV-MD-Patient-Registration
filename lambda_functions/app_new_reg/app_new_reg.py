@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_restful import Api, Resource
 import pymysql
 import json
+import aws_serverless_wsgi
 
 app = Flask(__name__)
 api = Api(app)
@@ -108,5 +109,5 @@ class NewPatientRegistration(Resource):
 
 api.add_resource(NewPatientRegistration, '/New-Patient-Registration')
 
-if __name__ == '_main_':
-    app.run(debug=True)
+def lambda_handler(event, context):
+    return aws_serverless_wsgi.handle_request(app, event, context)

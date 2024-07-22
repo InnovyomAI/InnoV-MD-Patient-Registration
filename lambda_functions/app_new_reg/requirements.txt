@@ -1,6 +1,4 @@
-Flask
-flask_restful
+flask
 pymysql
-magnum
-
+mangum
 

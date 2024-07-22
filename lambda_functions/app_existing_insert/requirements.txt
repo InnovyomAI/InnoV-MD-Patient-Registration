@@ -1,6 +1,0 @@
-Flask
-flask_restful
-pymysql
-git+https://github.com/logandk/serverless-wsgi.git
-
-

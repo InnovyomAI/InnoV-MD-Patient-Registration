@@ -95,18 +95,15 @@ def new_patient_registration():
 
 def lambda_handler(event, context):
     # Log the incoming event for debugging
-    print("Received event: %s", event)
+    print("Received event: %s", json.dumps(event))
 
     try:
         # Log specific parts of the event object for debugging
         print("Request context: %s", event.get('requestContext'))
         print("HTTP details: %s", event.get('requestContext', {}).get('http'))
 
-        # Check for API Gateway v2 payload format structure
-        if 'requestContext' in event and 'http' in event['requestContext']:
-            return awsgi.response(app, event, context)
-        else:
-            raise ValueError("Event structure does not match API Gateway v2 payload format")
+        # Pass the event directly to awsgi
+        return awsgi.response(app, event, context)
     except KeyError as e:
         logging.error("KeyError: %s", str(e))
         return {
@@ -114,15 +111,6 @@ def lambda_handler(event, context):
             'body': json.dumps({
                 'error': 'Internal server error',
                 'message': f'Missing key in event object: {str(e)}'
-            })
-        }
-    except ValueError as e:
-        logging.error("ValueError: %s", str(e))
-        return {
-            'statusCode': 400,
-            'body': json.dumps({
-                'error': 'Bad request',
-                'message': str(e)
             })
         }
     except Exception as e:
@@ -134,7 +122,6 @@ def lambda_handler(event, context):
                 'message': str(e)
             })
         }
-   
 
 if __name__ == "__main__":
     app.run(debug=True)

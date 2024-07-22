@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_restful import Api, Resource
 import pymysql
 import json
+import aws_serverless_wsgi
 
 app = Flask(__name__)
 api = Api(app)
@@ -72,5 +73,5 @@ class FetchPatientData(Resource):
 
 api.add_resource(FetchPatientData, '/Fetch-Patient-Data')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+def lambda_handler(event, context):
+    return aws_serverless_wsgi.handle_request(app, event, context)

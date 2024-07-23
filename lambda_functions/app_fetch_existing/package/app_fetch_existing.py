@@ -62,7 +62,7 @@ def fetch_patient_data():
                             if not result:
                                 return jsonify({'message': 'Patient not found'})
 
-                            return jsonify({'statusCode': 200, 'patient data': result})
+                            return jsonify({'statusCode': 200, 'data': result})
                         except pymysql.Error as retry_error:
                             continue
                 else:
@@ -82,8 +82,8 @@ def lambda_handler(event, context):
         print("Request context: %s", event.get('requestContext'))
         print("HTTP details: %s", event.get('requestContext', {}).get('http'))
 
-        # Pass the event directly to awsgi
-        return awsgi.handle_request(app, event, context)
+        # Pass the event directly to aws_wsgi
+        return awsgi.response(app, event, context)
     except KeyError as e:
         logging.error("KeyError: %s", str(e))
         return {

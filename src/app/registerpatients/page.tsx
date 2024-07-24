@@ -20,6 +20,9 @@ const RegisterNewPatient = () => {
           -ms-overflow-style: none;  /* IE and Edge */
           scrollbar-width: none;  /* Firefox */
         }
+        .main-content {
+          padding-top: 64px; /* Adjust this value according to the height of your navbar */
+        }
       `}</style>
 
       <section className="container">

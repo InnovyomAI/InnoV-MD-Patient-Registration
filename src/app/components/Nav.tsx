@@ -69,7 +69,7 @@ const Nav = () => {
               </div>
             ) : (
               <button
-                className="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 font-bold uppercase"
+                className="bg-[#005477] text-white px-4 py-2 rounded-full hover:bg-green-800 font-bold uppercase"
                 onClick={handleLogin}
               >
                 Sign In

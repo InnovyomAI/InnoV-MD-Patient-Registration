@@ -25,7 +25,7 @@ const RegisterNewPatient = () => {
         }
       `}</style>
 
-      <section className="container">
+      <section className="container main-content">
         <div className="max-w-[860px] flex-1 flex-col py-10">
           <div className="tabs flex space-x-4 mb-6">
             <button

@@ -130,7 +130,7 @@ const ExisitingPatientRegistrationForm = () => {
             <button
               type="button"
               onClick={onSearch}
-              className="w-full px-4 py-2 bg-green-550 text-white rounded-md hover:bg-blue-600"
+              className="w-full px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-600"
             >
               Search
             </button>
@@ -263,7 +263,7 @@ const ExisitingPatientRegistrationForm = () => {
       </Form>
 
       {successMessage && (
-        <div className="mt-4 text-green-600">
+        <div className="mt-4 text-blue-600">
           <p>{successMessage}</p>
         </div>
       )}

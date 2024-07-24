@@ -22,9 +22,9 @@
     left: 0;
     right: 0;
     z-index: 10;
+    height: 64px;
   }
 
-  .content {
-    margin-left: 16rem; /* Width of the sidebar */
+  .main-content {
     padding-top: 64px; /* Adjust based on the height of your nav */
   }

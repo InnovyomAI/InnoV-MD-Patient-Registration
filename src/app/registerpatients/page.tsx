@@ -29,13 +29,13 @@ const RegisterNewPatient = () => {
         <div className="max-w-[860px] flex-1 flex-col py-10">
           <div className="tabs flex space-x-4 mb-6">
             <button
-              className={`px-4 py-2 ${activeTab === "existing" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              className={`px-4 py-2 ${activeTab === "existing" ? "bg-[#005477] text-white" : "bg-gray-200"}`}
               onClick={() => setActiveTab("existing")}
             >
               Existing Patient Registration
             </button>
             <button
-              className={`px-4 py-2 ${activeTab === "new" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              className={`px-4 py-2 ${activeTab === "new" ? "bg-[#005477] text-white" : "bg-gray-200"}`}
               onClick={() => setActiveTab("new")}
             >
               New Patient Registration

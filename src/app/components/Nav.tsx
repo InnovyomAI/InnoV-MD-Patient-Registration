@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import innovmdLogo from "../public/assets/images/innovmd_logo.png";
+import innovmdLogo from "../../public/assets/images/innovmd_logo.png";
 import { FaBars } from "react-icons/fa";
 
 export const NavLinks = [

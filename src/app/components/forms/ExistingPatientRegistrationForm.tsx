@@ -9,7 +9,7 @@ import SubmitButton from '../SubmitButton';
 import { PatientData } from '../../types/PatientData'; // Import the patient data type
 
 const fetchPatientData = async (identificationNumber: string): Promise<PatientData> => {
-  const response = await fetch('https://m4o5cgclql.execute-api.us-east-1.amazonaws.com/fetch_patient_data', {
+  const response = await fetch('http://127.0.0.1:5000/Fetch-Patient-Data', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const registerPatient = async (patientData: {
   preferredPronouns?: string;
   chiefComplaints: string;
 }) => {
-  const response = await fetch('https://s0u8lv54ae.execute-api.us-east-1.amazonaws.com/insert_registration_data', {
+  const response = await fetch('http://127.0.0.1:5000/Insert-Registration-Data', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

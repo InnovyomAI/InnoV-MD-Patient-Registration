@@ -15,7 +15,7 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 
 const registerPatient = async (patientData: any) => {
-  const response = await fetch("https://i92hif6q32.execute-api.us-east-1.amazonaws.com/app_new_reg", {
+  const response = await fetch("http://127.0.0.1:5000/app_new_reg", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

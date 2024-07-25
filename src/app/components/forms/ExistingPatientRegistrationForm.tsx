@@ -9,7 +9,7 @@ import SubmitButton from '../SubmitButton';
 import { PatientData } from '../../types/PatientData'; // Import the patient data type
 
 const fetchPatientData = async (identificationNumber: string): Promise<PatientData> => {
-  const response = await fetch('https://ec2-54-161-88-73.compute-1.amazonaws.com', {
+  const response = await fetch('https://m4o5cgclql.execute-api.us-east-1.amazonaws.com/fetch_patient_data', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -31,3 +31,17 @@ export const PatientFormValidation = z.object({
   emergencyContactNumber: z.string().optional(),
   chiefComplaints: z.string().min(2, "complaint must be more than 2 characters"),
 });
+
+export const ExistingPatientFormValidation = z.object({
+  identificationNumber: z.string().min(1, "Identification number must not be empty"),
+  firstName: z
+    .string()
+    .min(2, "First name must be at least 2 characters")
+    .max(50, "First name must be at most 50 characters"),
+  lastName: z
+    .string()
+    .min(2, "Last name must be at least 2 characters")
+    .max(50, "Last name must be at most 50 characters"),
+  preferredPronouns: z.string().optional(),
+  chiefComplaints: z.string().min(2, "Complaint must be more than 2 characters"),
+});

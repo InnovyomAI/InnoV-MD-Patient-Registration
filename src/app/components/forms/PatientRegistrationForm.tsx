@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "../form";
 import { SelectItem } from "../select";
-import { GenderOptions, IdentificationTypes, PreferredPronouns, PatientFormDefaultValues } from "../../constants/index";
-//import { registerPatient } from "@/lib/actions/patient.actions";
+import { GenderOptions, IdentificationTypes, PreferredPronouns } from "../../constants/index";
 import { PatientFormValidation } from "../../lib/validation";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-number-input/style.css";
@@ -16,7 +15,7 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 
 const registerPatient = async (patientData: any) => {
-  const response = await fetch("/api/newPatient", {
+  const response = await fetch("https://i92hif6q32.execute-api.us-east-1.amazonaws.com/app_new_reg", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -35,17 +34,22 @@ const PatientRegistrationForm = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
-    resolver: zodResolver(PatientFormValidation)
+    resolver: zodResolver(PatientFormValidation),
   });
-
+  const handleStartClick = () => {
+    setSuccessMessage(null);
+    form.reset();
+  };
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
 
     try {
       const newPatient = await registerPatient(values); // API call for registering patient
-
+      console.log("newpatinet",newPatient)
       if (newPatient) {
+        console.log("new patient values",newPatient)
         setSuccessMessage(`Registration successful! Your ID is ${newPatient.registrationId}`);
+        form.reset();
       }
     } catch (error) {
       console.log(error);
@@ -53,6 +57,7 @@ const PatientRegistrationForm = () => {
 
     setIsLoading(false);
   };
+  
 
   return (
     <div>
@@ -82,7 +87,7 @@ const PatientRegistrationForm = () => {
               ))}
             </CustomFormField>
 
-            {/* Health Card Number */}
+            {/* Identification Number */}
             <CustomFormField
               fieldType={FormFieldType.INPUT}
               control={form.control}
@@ -171,12 +176,12 @@ const PatientRegistrationForm = () => {
               label="Preferred Pronouns"
               placeholder="Select preferred pronouns"
             >
-               {PreferredPronouns.map((option, i) => (
-                  <SelectItem key={option + i} value={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </CustomFormField>
+              {PreferredPronouns.map((option, i) => (
+                <SelectItem key={option + i} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </CustomFormField>
 
             {/* Address */}
             <CustomFormField
@@ -203,7 +208,9 @@ const PatientRegistrationForm = () => {
               label="Emergency Contact Number"
               placeholder="(555) 123-4567"
             />
-             <CustomFormField
+
+            {/* Chief Complaints */}
+            <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
               name="chiefComplaints"
@@ -216,8 +223,15 @@ const PatientRegistrationForm = () => {
         </form>
       </Form>
       {successMessage && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-green-600 text-white text-center">
-          {successMessage}
+        <div className="mt-4 text-blue-600">
+          <button
+            type="button"
+            onClick={handleStartClick}
+            className="w-full px-4 py-2 mt-4 bg-green-500 text-white rounded-md hover:bg-green-600"
+          >
+            Start
+          </button>
+          <p>{successMessage}</p>
         </div>
       )}
     </div>

@@ -1,0 +1,17 @@
+/* components/Header.module.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f9f9a9;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+.header div {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.header .active {
+  background-color: #d3f9d8;
+}

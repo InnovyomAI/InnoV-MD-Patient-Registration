@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
-import PatientRegistrationForm from "../components/forms/PatientRegistrationForm";
-import ExistingPatientRegistrationForm from "../components/forms/ExistingPatientRegistrationForm"; // Assuming you have this component
+import PatientRegistrationForm from "../";
+import ExistingPatientRegistrationForm from "../components/shared/forms/ExistingPatientRegistrationForm"; // Assuming you have this component
 
 const RegisterNewPatient = () => {
   const [activeTab, setActiveTab] = useState("new");
